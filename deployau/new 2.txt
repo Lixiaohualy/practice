@@ -1,0 +1,67 @@
+latestBuildNameList = copy_build(version)
+    /Users/mac/Ftp/i386/libvsapi.dylib   os.getcwd()/Build/i386
+	/Users/mac/Ftp/x86_64/libvsapi.dylib     os.getcwd()/Build/x86_64
+	
+	
+	
+	注意：aufolder  aufolders = ['components', 'engineserver', 'fullserver']
+	
+update_crc_module
+           au_path = au_server + ':/Library/WebServer/Documents/AU_X/2.1_i386/' + aufolder + '/'
+		   au_path =  au_server + ':/Library/WebServer/Documents/AU_X/2.1_x64/' + aufolder + '/'
+	              10.204.251.10:/Library/WebServer/Documents/AU_X/2.1_i386/+aufolder/
+				  10.204.251.10:/Library/WebServer/Documents/AU_X/2.1_x64/+aufolder/
+		   
+    sudo -S cp -rf %s %s <<@@@\r\n%s\r\n@@@ " %(/Library/Application Support/TrendMicro/common/lib/CRC/lib, /Users/mac/TestiCore/AuLocal/crc, ConfigIDCE.PASSWORD)\
+	 os.chdir('/Users/mac/TestiCore/AuLocal/crc') 
+	 
+	 os.system('zip -r %s/CRCLib.zip ./*' %(AuPath))	
+	  /Users/mac/TestiCore/AuLocal/CRCLib.zip      /Users/mac/TestiCore/AuLocal/crc/* 
+	  
+    shutil.copy2('%s/CRCLib.zip' %AuPath, './' + arch)
+			   /Users/mac/TestiCore/AuLocal/CRCLib.zip  TestiCore/arch
+			   
+    os.system('echo "111111" | sudo -S scp %s/CRCLib.zip %s' %(arch, tgt_package))    scp命令用于Linux之间复制文件和目录。
+			   /Users/mac/TestiCore/arch/CRCLib.zip     au_path/engine/CRCLib_buildNum.zip
+			   
+    os.system('echo "111111" | sudo -S scp %s %s/server.ini.bak' %(tgt_inifile, arch)) 
+			     10.204.251.10:/Library/WebServer/Documents/AU_X/2.1_x64/+aufolder/sever.ini   /Users/mac/TestiCore/arch/sever.ini.bak
+				 
+    os.system('echo "111111" | sudo -S scp %s server.ini' %(tgt_inifile))
+			     10.204.251.10:/Library/WebServer/Documents/AU_X/2.1_x64/+aufolder/sever.ini    arch/sever.ini
+	
+    os.system('echo "111111" | sudo -S scp %s/server.ini %s' %(arch, tgt_inifile))
+	             TestiCore/arch/sever.ini        tgt_inifile
+				 
+				 
+update_module(auid='24000040',auname='VSAPI_MACOS_X_UNIVERSAL',libname='libvsapi',locallibfolder='vsapi',architecure=arch)
+        tgt_package = au_path + 'engine/' + libname + '_' + buildNum + '.dylib.zip'
+				  au_path/+aufolder/engine/libvsapi_buildNum.dylib.zip
+		tgt_inifile = au_path + 'server.ini' 
+				    au_path/+aufolder/server.ini
+					
+					
+     test_icore_lib.sudo_copy2(SysCommon.ParseString(local_lib), libname + '.dylib')
+	        /Library/Application Support/TrendMicro/common/lib/vsapi/libvsapi.dylib     TestiCore/libvsapi.dylib
+	 
+	 shutil.copy2(libname + '.dylib', './' + arch)
+	        TestiCore/libvsapi.dylib     ./arch
+			
+	 os.system('zip -j %s/%s.dylib.zip %s/%s.dylib > /dev/null' %(arch, libname, arch, libname))   #-j：只保存文件名称及其内容，而不存放任何目录名称；
+	            arch/libvsapi.dylib.zip    arch/libvsapi.dylib
+				
+	 os.system('echo "111111" | sudo -S scp %s/%s.dylib.zip %s' %(arch, libname, tgt_package))
+			sudo -S scp arch/libvsapi.dylib.zip   tgt_package
+			
+	os.system('echo "111111" | sudo -S scp %s %s/server.ini.bak' %(tgt_inifile, arch)) 			
+	         tgt_inifile       arch/sever.ini.bak
+			 
+	os.system('echo "111111" | sudo -S scp %s server.ini' %(tgt_inifile))	
+	         tgt_inifile       TestiCore/sever.ini
+	os.system('echo "111111" | sudo -S scp %s/server.ini %s' %(arch, tgt_inifile)) 
+	         arch/sever.ini     tgt_inifile
+			 
+update_module('48000176', 'TMUFE_MACOS_X_UNIVERSAL', 'libtmufeng', 'TMUFE',arch)
+update_module('48000196', 'TMFBE_MACOS_X_UNIVERSAL', 'libtmfbeng', 'TMFBE',arch)
+update_dce_module('48000174', 'DCE_MACOS_X_UNIVERSAL', 'DCELib', 'DCE')
+update_rcm_module('48000197','RCM_MACOS_X_UNIVERSAL', 'RCMLib', 'RCM',arch)

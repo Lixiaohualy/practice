@@ -1,0 +1,61 @@
+你帮我把starttest.py 这个脚本里面deployau 做的事情整理下， 比如要拷贝哪些目录下的文件到251.10的对应哪个目录 
+这个python Starttest.py --deployau 2.5  执行一直有问题，
+ 如果可以，你看看能不能把所有拷贝的动作最后统一放到一个shell 脚本来执行（包括密码输入）， 不用shutil.copy来实现 
+目前这个命令跑起来卡在很多密码输入的地方， 下午虚机ready了你也可以试一下 
+
+
+
+latestBuildNameList = copy_build(version)
+    /Users/mac/Ftp/i386/libvsapi.dylib   os.getcwd()/Build/i386
+	/Users/mac/Ftp/x86_64/libvsapi.dylib     os.getcwd()/Build/x86_64
+	
+	
+	
+	注意：aufolder  aufolders = ['components', 'engineserver', 'fullserver']
+	
+update_crc_module
+    sudo -S cp -rf %s %s <<@@@\r\n%s\r\n@@@ " %(/Library/Application Support/TrendMicro/common/lib/CRC/lib, /Users/mac/TestiCore/AuLocal/crc, ConfigIDCE.PASSWORD)
+    os.system('zip -r %s/CRCLib.zip ./*' %(AuPath))	
+	  /Users/mac/TestiCore/AuLocal/CRCLib.zip
+    shutil.copy2('%s/CRCLib.zip' %AuPath, './' + arch)
+			   /Users/mac/TestiCore/AuLocal/CRCLib.zip  ./arch
+    os.system('echo "111111" | sudo -S scp %s/CRCLib.zip %s' %(arch, tgt_package))    scp命令用于Linux之间复制文件和目录。
+	           au_path = au_server + ':/Library/WebServer/Documents/AU_X/2.1_i386/' + aufolder + '/'
+			   /Users/mac/TestiCore/arch/CRCLib.zip     au_path/engine/CRCLib_buildNum.zip
+			   
+    os.system('echo "111111" | sudo -S scp %s %s/server.ini.bak' %(tgt_inifile, arch)) 
+			     10.204.251.10:/Library/WebServer/Documents/AU_X/2.1_x64/+aufolder/sever.ini   /Users/mac/TestiCore/arch/sever.ini.bak
+				 
+    os.system('echo "111111" | sudo -S scp %s server.ini' %(tgt_inifile))
+			     10.204.251.10:/Library/WebServer/Documents/AU_X/2.1_x64/+aufolder/sever.ini    sever.ini
+	
+    os.system('echo "111111" | sudo -S scp %s/server.ini %s' %(arch, tgt_inifile))
+	             arch      
+				 
+				 
+				 
+	
+update_module(auid='24000040',auname='VSAPI_MACOS_X_UNIVERSAL',libname='libvsapi',locallibfolder='vsapi',architecure=arch)
+                   tgt_package = au_path + 'engine/' + libname + '_' + buildNum + '.dylib.zip'
+				   10.204.251.10:/Library/WebServer/Documents/AU_X/2.1_i386/+aufolder/engine/libvsapi_buildNum.dylib.zip
+				   tgt_inifile = au_path + 'server.ini' 
+				    10.204.251.10:/Library/WebServer/Documents/AU_X/2.1_i386/+aufolder/server.ini
+					
+					
+     test_icore_lib.sudo_copy2(SysCommon.ParseString(local_lib), libname + '.dylib')
+	        /Library/Application Support/TrendMicro/common/lib/vsapi/libvsapi.dylib     TestiCore/libvsapi.dylib
+	 
+	 shutil.copy2(libname + '.dylib', './' + arch)
+	        TestiCore/libvsapi.dylib     ./arch
+			
+	 os.system('zip -j %s/%s.dylib.zip %s/%s.dylib > /dev/null' %(arch, libname, arch, libname))   #-j：只保存文件名称及其内容，而不存放任何目录名称；
+	            arch/libvsapi.dylib.zip    arch/libvsapi.dylib
+				
+	 os.system('echo "111111" | sudo -S scp %s/%s.dylib.zip %s' %(arch, libname, tgt_package))
+			sudo -S scp arch/libvsapi.dylib.zip   tgt_package
+	os.system('echo "111111" | sudo -S scp %s %s/server.ini.bak' %(tgt_inifile, arch)) 			
+	         tgt_inifile       arch/sever.ini.bak
+	os.system('echo "111111" | sudo -S scp %s server.ini' %(tgt_inifile))	
+	         tgt_inifile       sever.ini
+	os.system('echo "111111" | sudo -S scp %s/server.ini %s' %(arch, tgt_inifile)) 
+	         arch/sever.ini     tgt_inifile
